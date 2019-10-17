@@ -1,5 +1,5 @@
 class NotesController < ApplicationController
-  before_action :find_note, only: [:show]
+  before_action :find_note, only: [:show, :edit, :update, :destroy]
 
   def index
     @notes = Note.all.order("created_at DESC")    
@@ -13,6 +13,10 @@ class NotesController < ApplicationController
     @note = Note.new
   end
   
+  def edit
+    
+  end
+  
   def create
     @note = Note.new(note_params)
     if @note.save
@@ -20,6 +24,19 @@ class NotesController < ApplicationController
     else
       render 'new'
     end
+  end
+  
+  def update
+    if @note.update(note_params)
+      redirect_to @note
+    else
+      render 'edit'
+    end
+  end
+  
+  def destroy
+    @note.destroy
+    redirect_to notes_path
   end
   
   private
